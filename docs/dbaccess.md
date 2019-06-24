@@ -1,12 +1,11 @@
+dbaccess是Cache访问持久化服务的代理服务，持久化服务可以是MySQL、SQL Server, PostgreSQL等关系型数据库，通过dbaccess服务，可以将内存数据保存到硬盘中。本篇文档的目标读者是有将内存数据永久保存需求的人。
+
+下面以MySQL为例，展示如何实现内存数据持久化。
 
 > * [提供DB实例和数据表](#1)
 > * [开发一个基于tars的dbaccess服务](#2)
 > * [相关配置](#3)
 > * [部署dbaccess服务](#4)
-
-dbaccess是Cache访问持久化服务的代理服务，持久化服务可以是MySQL、SQL Server, PostgreSQL等关系型数据库，通过dbaccess服务，可以将内存数据保存到硬盘中。本篇文档的目标读者是有将数据永久保存需求的人。
-
-下面以MySQL为例，展示如何实现内存数据持久化。
 
 ## <a id = "1"></a> 1. 提供DB实例和数据表
 
@@ -18,10 +17,10 @@ dbaccess是Cache访问持久化服务的代理服务，持久化服务可以是M
 
 一个模块对应一张表。
 
-假设你有一个key-value模块，其中key是身份ID，value是地址信息，那么建表时就要创建3个字段：person_ID，person_Address，sDCacheExpireTime，其中字段“sDCacheExpireTime”是DCache要求增加的一个额外字段。
+假设你有一个key-value模块，其中key是身份ID，value是地址信息，那么建表时就要创建3个字段：person_ID，person_Address，sDCacheExpireTime，其中字段“sDCacheExpireTime”是DCache要求增加的一个额外字段，表示过期时间。
 
 
-假设你有一个k-k-row模块，其中主key是身份ID，联合key是课程ID，value是成绩，那么建表时就要指定4个字段：person_ID，course_ID，score，sDCacheExpireTime，其中字段“sDCacheExpireTime”是DCache要求增加的一个额外字段。
+假设你有一个k-k-row模块，其中主key是身份ID，联合key是课程ID，value是成绩，那么建表时就要指定4个字段：person_ID，course_ID，score，sDCacheExpireTime，其中字段“sDCacheExpireTime”是DCache要求增加的一个额外字段，表示过期时间。
 
 
 ## <a id = "2"></a> 2. 开发一个基于tars的dbaccess服务
@@ -35,7 +34,7 @@ dbaccess服务是DCache访问MySQL的代理，在dbaccess服务中通过访问My
 
 ## <a id = "3"></a> 3. 相关配置
 
-成功发布dbaccess服务后，需要作一些相应的配置，将Cache服务、dbaccess服务和MySQL实例整合成一个整体，从而实现数据持久化。
+发布dbaccess服务前，需要作一些相应的配置，将Cache服务、dbaccess服务和MySQL实例整合成一个整体，从而实现数据持久化。
 
 #### 3.1. 配置dbaccess服务
 dbaccess服务的配置可参考库中的[DbAccess.conf文件](https://github.com/Tencent/DCache/blob/master/src/DbAccess/example/DbAccess.conf)，主要包括MySQL实例的用户名，密码和端口等信息。
